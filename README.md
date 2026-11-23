@@ -100,8 +100,10 @@ print(df.head())
 2  False   False   True   True
 3   True    True  False  False
 4   True    True   True   True
-## Input 3
+
 ```
+## Input 3
+
 # Step 4: Apply Apriori Algorithm
 frequent_itemsets = apriori(
     df,
