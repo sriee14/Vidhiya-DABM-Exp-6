@@ -43,10 +43,11 @@ A sample retail transaction dataset containing **10 transactions** across **4 gr
 ## Program & Output
 ## Input 1
 ```
-# Market Basket Analysis (Association Rule Mining)
-
 # Step 1: Import Required Libraries
 import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 from mlxtend.frequent_patterns import apriori, association_rules
 
 # Step 2: Create Sample Transaction Dataset
@@ -62,7 +63,23 @@ dataset = [
     ['Bread', 'Butter', 'Eggs'],
     ['Milk', 'Bread', 'Butter', 'Eggs']
 ]
-
+dataset
+```
+## Ouput 1
+```
+[['Milk', 'Bread', 'Eggs'],
+ ['Milk', 'Bread'],
+ ['Milk', 'Eggs'],
+ ['Bread', 'Butter'],
+ ['Milk', 'Bread', 'Butter', 'Eggs'],
+ ['Bread', 'Eggs'],
+ ['Milk', 'Butter'],
+ ['Milk', 'Bread', 'Butter'],
+ ['Bread', 'Butter', 'Eggs'],
+ ['Milk', 'Bread', 'Butter', 'Eggs']]
+```
+## Input 2
+```
 # Step 3: Convert Dataset into One-Hot Encoding
 from mlxtend.preprocessing import TransactionEncoder
 
@@ -74,7 +91,7 @@ df = pd.DataFrame(te_array, columns=te.columns_)
 print("----- Transaction Dataset (One-Hot Encoded) -----")
 print(df.head())
 ```
-## Ouput 1
+## Output 2
 ```
 ----- Transaction Dataset (One-Hot Encoded) -----
    Bread  Butter   Eggs   Milk
@@ -83,8 +100,7 @@ print(df.head())
 2  False   False   True   True
 3   True    True  False  False
 4   True    True   True   True
-```
-## Input 2
+## Input 3
 ```
 # Step 4: Apply Apriori Algorithm
 frequent_itemsets = apriori(
@@ -95,26 +111,27 @@ frequent_itemsets = apriori(
 
 print("\n----- Frequent Itemsets -----")
 print(frequent_itemsets)
+
 ```
-## Output 2
+## Output 3
 ```
------ Frequent Itemsets -----
-    support                          itemsets
-0       0.8                frozenset({Bread})
-1       0.6               frozenset({Butter})
-2       0.6                 frozenset({Eggs})
-3       0.7                 frozenset({Milk})
-4       0.5        frozenset({Bread, Butter})
-5       0.5          frozenset({Eggs, Bread})
-6       0.5          frozenset({Bread, Milk})
-7       0.3         frozenset({Eggs, Butter})
-8       0.4         frozenset({Butter, Milk})
-9       0.4           frozenset({Eggs, Milk})
-10      0.3  frozenset({Eggs, Bread, Butter})
-11      0.3  frozenset({Bread, Butter, Milk})
-12      0.3    frozenset({Eggs, Bread, Milk})
+---- Frequent Itemsets -----
+    support               itemsets
+0       0.8                (Bread)
+1       0.6               (Butter)
+2       0.6                 (Eggs)
+3       0.7                 (Milk)
+4       0.5        (Butter, Bread)
+5       0.5          (Eggs, Bread)
+6       0.5          (Milk, Bread)
+7       0.3         (Butter, Eggs)
+8       0.4         (Butter, Milk)
+9       0.4           (Milk, Eggs)
+10      0.3  (Butter, Eggs, Bread)
+11      0.3  (Butter, Milk, Bread)
+12      0.3    (Eggs, Milk, Bread) 
 ```
-## Input 3
+## Input 4
 ```
 # Step 5: Generate Association Rules
 rules = association_rules(
@@ -128,44 +145,28 @@ print(rules[['antecedents', 'consequents',
              'support', 'confidence', 'lift']])
 
 ```
-## Output 3
+## Output 4
 ```
 ----- Association Rules -----
-                   antecedents                 consequents  support  \
-0           frozenset({Bread})         frozenset({Butter})      0.5   
-1          frozenset({Butter})          frozenset({Bread})      0.5   
-2            frozenset({Eggs})          frozenset({Bread})      0.5   
-3           frozenset({Bread})           frozenset({Eggs})      0.5   
-4     frozenset({Eggs, Bread})         frozenset({Butter})      0.3   
-5    frozenset({Eggs, Butter})          frozenset({Bread})      0.3   
-6   frozenset({Bread, Butter})           frozenset({Eggs})      0.3   
-7            frozenset({Eggs})  frozenset({Bread, Butter})      0.3   
-8           frozenset({Bread})   frozenset({Eggs, Butter})      0.3   
-9          frozenset({Butter})    frozenset({Eggs, Bread})      0.3   
-10    frozenset({Bread, Milk})         frozenset({Butter})      0.3   
-11         frozenset({Butter})    frozenset({Bread, Milk})      0.3   
-12    frozenset({Bread, Milk})           frozenset({Eggs})      0.3   
-13           frozenset({Eggs})    frozenset({Bread, Milk})      0.3   
-
-    confidence      lift  
-0     0.625000  1.041667  
-1     0.833333  1.041667  
-2     0.833333  1.041667  
-3     0.625000  1.041667  
-4     0.600000  1.000000  
-5     1.000000  1.250000  
-6     0.600000  1.000000  
-7     0.500000  1.000000  
-8     0.375000  1.250000  
-9     0.500000  1.000000  
-10    0.600000  1.000000  
-11    0.500000  1.000000  
-12    0.600000  1.000000  
-13    0.500000  1.000000  
-```
-## Input 4
+        antecedents      consequents  support  confidence      lift
+0          (Butter)          (Bread)      0.5    0.833333  1.041667
+1           (Bread)         (Butter)      0.5    0.625000  1.041667
+2            (Eggs)          (Bread)      0.5    0.833333  1.041667
+3           (Bread)           (Eggs)      0.5    0.625000  1.041667
+4    (Butter, Eggs)          (Bread)      0.3    1.000000  1.250000
+5   (Butter, Bread)           (Eggs)      0.3    0.600000  1.000000
+6     (Bread, Eggs)         (Butter)      0.3    0.600000  1.000000
+7          (Butter)    (Bread, Eggs)      0.3    0.500000  1.000000
+8            (Eggs)  (Butter, Bread)      0.3    0.500000  1.000000
+9           (Bread)   (Butter, Eggs)      0.3    0.375000  1.250000
+10    (Milk, Bread)         (Butter)      0.3    0.600000  1.000000
+11         (Butter)    (Milk, Bread)      0.3    0.500000  1.000000
+12    (Milk, Bread)           (Eggs)      0.3    0.600000  1.000000
+13           (Eggs)    (Milk, Bread)      0.3    0.500000  1.000000
 ```
 
+## Input 5
+```
 # Step 6: Sort and Filter Strong Rules
 strong_rules = rules[
     (rules['confidence'] >= 0.6) &
@@ -177,24 +178,19 @@ print(strong_rules[['antecedents', 'consequents',
                     'support', 'confidence', 'lift']])
 
 ```
-## Output 4
+
+Output 5                    
 ```
+
 ----- Strong Association Rules -----
-                 antecedents          consequents  support  confidence  \
-0         frozenset({Bread})  frozenset({Butter})      0.5    0.625000   
-1        frozenset({Butter})   frozenset({Bread})      0.5    0.833333   
-2          frozenset({Eggs})   frozenset({Bread})      0.5    0.833333   
-3         frozenset({Bread})    frozenset({Eggs})      0.5    0.625000   
-5  frozenset({Eggs, Butter})   frozenset({Bread})      0.3    1.000000   
+      antecedents consequents  support  confidence      lift
+0        (Butter)     (Bread)      0.5    0.833333  1.041667
+1         (Bread)    (Butter)      0.5    0.625000  1.041667
+2          (Eggs)     (Bread)      0.5    0.833333  1.041667
+3         (Bread)      (Eggs)      0.5    0.625000  1.041667
+4  (Butter, Eggs)     (Bread)      0.3    1.000000  1.250000
 
-       lift  
-0  1.041667  
-1  1.041667  
-2  1.041667  
-3  1.041667  
-5  1.250000  
 ```
-
 ## Result
 
 The Apriori algorithm successfully discovered frequent itemsets and strong association rules.
