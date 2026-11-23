@@ -181,7 +181,7 @@ print(strong_rules[['antecedents', 'consequents',
 
 ```
 
-Output 5                    
+## Output 5                    
 ```
 
 ----- Strong Association Rules -----
