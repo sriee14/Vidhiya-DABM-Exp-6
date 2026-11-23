@@ -103,7 +103,7 @@ print(df.head())
 
 ```
 ## Input 3
-
+```
 # Step 4: Apply Apriori Algorithm
 frequent_itemsets = apriori(
     df,
